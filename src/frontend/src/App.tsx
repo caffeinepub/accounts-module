@@ -1,83 +1,27 @@
 import {
+  Activity,
   AlertTriangle,
+  ArrowUpRight,
+  BarChart3,
   Bell,
-  BookOpen,
-  Building2,
-  Calculator,
   CheckCircle2,
-  ChevronDown,
-  ChevronRight,
   Clock,
-  CreditCard,
   DollarSign,
-  Factory,
-  FileBarChart2,
   FileText,
-  Filter,
-  GraduationCap,
   HelpCircle,
-  Link2,
   RefreshCw,
   RotateCcw,
   Search,
   Settings,
-  Target,
-  TrendingDown,
   TrendingUp,
   UploadCloud,
-  Users,
+  Wallet,
   XCircle,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 type Page = "dashboard" | "qualia-reconciliation";
-
-interface NavItem {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-  children?: { id: string; label: string }[];
-}
-
-const navItems: NavItem[] = [
-  { id: "employee", label: "Employee Management", icon: <Users size={16} /> },
-  { id: "stripe", label: "Stripe", icon: <CreditCard size={16} /> },
-  { id: "criteria", label: "Criteria", icon: <Filter size={16} /> },
-  {
-    id: "courthouse",
-    label: "Courthouse Examiner",
-    icon: <Building2 size={16} />,
-  },
-  {
-    id: "search-link",
-    label: "Search Link Management",
-    icon: <Link2 size={16} />,
-  },
-  { id: "work-target", label: "Work Target", icon: <Target size={16} /> },
-  {
-    id: "accounts",
-    label: "Accounts",
-    icon: <DollarSign size={16} />,
-    children: [
-      { id: "dashboard", label: "Dashboard" },
-      { id: "qualia-reconciliation", label: "Qualia Reconciliation" },
-    ],
-  },
-  { id: "release", label: "Release Tracking", icon: <BookOpen size={16} /> },
-  {
-    id: "training",
-    label: "Training Management",
-    icon: <GraduationCap size={16} />,
-  },
-  { id: "taxmaster", label: "TaxMaster", icon: <Calculator size={16} /> },
-  {
-    id: "production",
-    label: "Production Management",
-    icon: <Factory size={16} />,
-  },
-  { id: "pending", label: "Pending Report", icon: <FileBarChart2 size={16} /> },
-];
 
 const invoiceData = [
   {
@@ -300,126 +244,170 @@ function StatusChip({ status }: { status: string }) {
   );
 }
 
-function KpiCard({
-  label,
-  value,
-  delta,
-  positive,
-  icon,
-  iconBg,
-}: {
-  label: string;
-  value: string;
-  delta: string;
-  positive: boolean;
-  icon: React.ReactNode;
-  iconBg: string;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35 }}
-      className="bg-white rounded-xl border border-[#E6EBF0] shadow-card p-5 flex flex-col gap-3"
-    >
-      <div className="flex items-center justify-between">
-        <span className="text-xs font-medium text-[#6B7280] uppercase tracking-wide">
-          {label}
-        </span>
-        <span
-          className="w-9 h-9 rounded-full flex items-center justify-center text-white"
-          style={{ backgroundColor: iconBg }}
-        >
-          {icon}
-        </span>
-      </div>
-      <div className="text-[22px] font-bold text-[#111827]">{value}</div>
-      <div
-        className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full w-fit"
-        style={{
-          backgroundColor: positive ? "#DFF3E7" : "#F6D6D2",
-          color: positive ? "#1F7A4D" : "#A33A2B",
-        }}
-      >
-        {positive ? <TrendingUp size={11} /> : <TrendingDown size={11} />}
-        {delta}
-      </div>
-    </motion.div>
-  );
-}
-
 function DashboardPage() {
   const statusBreakdown = [
-    { label: "Completed", count: 842, color: "#2F8F91", pct: 66 },
+    { label: "Completed", count: 842, color: "#0f766e", pct: 66 },
     { label: "Cancelled", count: 198, color: "#A33A2B", pct: 15 },
     { label: "Failed", count: 124, color: "#8A6A00", pct: 10 },
-    { label: "Pending", count: 120, color: "#3B59C2", pct: 9 },
+    { label: "Pending", count: 120, color: "#4338ca", pct: 9 },
+  ];
+
+  const statCards = [
+    {
+      label: "Paid Amount",
+      value: "$1,920,450",
+      delta: "+5% from last month",
+      icon: <Wallet size={18} />,
+      accent: "#0f766e",
+      accentLight: "#ccfbf1",
+    },
+    {
+      label: "Collected Rate",
+      value: "89.7%",
+      delta: "+2.3% from last month",
+      icon: <Activity size={18} />,
+      accent: "#4338ca",
+      accentLight: "#e0e7ff",
+    },
+    {
+      label: "This Month's Orders",
+      value: "186",
+      delta: "+12 from last month",
+      icon: <BarChart3 size={18} />,
+      accent: "#0369a1",
+      accentLight: "#e0f2fe",
+    },
   ];
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-[22px] font-bold text-[#111827]">Dashboard</h1>
-        <p className="text-sm text-[#6B7280] mt-0.5">Accounts Overview</p>
+    <div className="flex flex-col gap-5">
+      {/* Hero Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative overflow-hidden rounded-2xl p-7"
+        style={{
+          background:
+            "linear-gradient(135deg, #0f766e 0%, #1d4ed8 60%, #4338ca 100%)",
+        }}
+      >
+        {/* Decorative circles */}
+        <div
+          className="absolute -top-10 -right-10 w-52 h-52 rounded-full opacity-10"
+          style={{ background: "rgba(255,255,255,0.4)" }}
+        />
+        <div
+          className="absolute bottom-0 right-32 w-32 h-32 rounded-full opacity-10"
+          style={{ background: "rgba(255,255,255,0.3)" }}
+        />
+
+        <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+          <div>
+            <p className="text-teal-200 text-sm font-medium tracking-wide uppercase mb-1">
+              Accounts Overview · March 2026
+            </p>
+            <h1 className="text-4xl font-bold text-white leading-tight">
+              $2,140,890
+            </h1>
+            <p className="text-white/70 text-sm mt-1">
+              Total Revenue Processed
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-2.5 bg-white/15 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2.5">
+              <FileText size={15} className="text-teal-200" />
+              <div>
+                <div className="text-white font-bold text-lg leading-none">
+                  1,284
+                </div>
+                <div className="text-white/70 text-[11px] mt-0.5">
+                  Total Invoices
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 bg-white/15 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2.5">
+              <Clock size={15} className="text-amber-200" />
+              <div>
+                <div className="text-white font-bold text-lg leading-none">
+                  $220,440
+                </div>
+                <div className="text-white/70 text-[11px] mt-0.5">Pending</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 bg-white/20 rounded-lg px-3 py-2">
+              <TrendingUp size={14} className="text-green-300" />
+              <span className="text-green-300 text-xs font-semibold">
+                +8% MoM
+              </span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Stat Cards Row */}
+      <div className="grid grid-cols-3 gap-4">
+        {statCards.map((card, i) => (
+          <motion.div
+            key={card.label}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: i * 0.07 }}
+            className="bg-white rounded-xl border border-slate-100 shadow-sm p-5 flex items-start gap-4"
+            style={{ borderLeft: `4px solid ${card.accent}` }}
+          >
+            <div
+              className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+              style={{ backgroundColor: card.accentLight, color: card.accent }}
+            >
+              {card.icon}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                {card.label}
+              </p>
+              <p className="text-2xl font-bold text-slate-800 mt-0.5">
+                {card.value}
+              </p>
+              <div className="flex items-center gap-1 mt-1.5">
+                <ArrowUpRight size={12} style={{ color: card.accent }} />
+                <span
+                  className="text-[11px] font-medium"
+                  style={{ color: card.accent }}
+                >
+                  {card.delta}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
-        <KpiCard
-          label="Total Invoices"
-          value="1,284"
-          delta="+12% from last month"
-          positive
-          icon={<FileText size={17} />}
-          iconBg="#2F8F91"
-        />
-        <KpiCard
-          label="Total Amount"
-          value="$2,140,890"
-          delta="+8% from last month"
-          positive
-          icon={<DollarSign size={17} />}
-          iconBg="#3B59C2"
-        />
-        <KpiCard
-          label="Paid Amount"
-          value="$1,920,450"
-          delta="+5% from last month"
-          positive
-          icon={<CheckCircle2 size={17} />}
-          iconBg="#1F7A4D"
-        />
-        <KpiCard
-          label="Pending"
-          value="$220,440"
-          delta="-3% from last month"
-          positive={false}
-          icon={<Clock size={17} />}
-          iconBg="#8A6A00"
-        />
-      </div>
-
+      {/* Two-column main section */}
       <div className="flex gap-4">
+        {/* Left: Recent Invoices */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="flex-[3] bg-white rounded-xl border border-[#E6EBF0] shadow-card overflow-hidden"
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="flex-[3] bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden"
         >
-          <div className="px-5 py-4 border-b border-[#E6EBF0] flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-[#111827]">
+          <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-slate-700">
               Recent Invoices
             </h2>
             <button
               type="button"
-              className="text-xs text-teal-500 hover:text-teal-600 font-medium"
+              className="text-xs text-teal-600 hover:text-teal-700 font-semibold flex items-center gap-1"
             >
-              View All →
+              View All <ArrowUpRight size={12} />
             </button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
-                <tr className="bg-[#F3F6F8] border-b border-[#E6EBF0]">
+                <tr style={{ backgroundColor: "#0f766e" }}>
                   {[
                     "SI No",
                     "Qualia Order #",
@@ -432,7 +420,7 @@ function DashboardPage() {
                   ].map((h) => (
                     <th
                       key={h}
-                      className="px-4 py-2.5 text-left font-semibold text-[#6B7280] whitespace-nowrap"
+                      className="px-4 py-3 text-left font-semibold text-white whitespace-nowrap"
                     >
                       {h}
                     </th>
@@ -444,23 +432,25 @@ function DashboardPage() {
                   <tr
                     key={row.si}
                     data-ocid={`invoices.item.${i + 1}`}
-                    className="border-b border-[#E6EBF0] hover:bg-[#F8FAFB] transition-colors"
+                    className={`border-b border-slate-100 hover:bg-teal-50/40 transition-colors ${
+                      i % 2 === 0 ? "bg-white" : "bg-slate-50/60"
+                    }`}
                   >
-                    <td className="px-4 py-2.5 text-[#111827]">{row.si}</td>
-                    <td className="px-4 py-2.5 font-medium text-teal-500">
+                    <td className="px-4 py-2.5 text-slate-800">{row.si}</td>
+                    <td className="px-4 py-2.5 font-semibold text-teal-700">
                       {row.order}
                     </td>
-                    <td className="px-4 py-2.5 text-[#374151]">
+                    <td className="px-4 py-2.5 text-slate-600">
                       {row.product}
                     </td>
-                    <td className="px-4 py-2.5 text-[#374151]">
+                    <td className="px-4 py-2.5 text-slate-600">
                       {row.orderStatus}
                     </td>
-                    <td className="px-4 py-2.5 font-medium text-[#111827]">
+                    <td className="px-4 py-2.5 font-semibold text-slate-800">
                       {row.orderValue}
                     </td>
-                    <td className="px-4 py-2.5 text-[#6B7280]">{row.fee}</td>
-                    <td className="px-4 py-2.5 font-medium text-[#111827]">
+                    <td className="px-4 py-2.5 text-slate-500">{row.fee}</td>
+                    <td className="px-4 py-2.5 font-semibold text-slate-800">
                       {row.paid}
                     </td>
                     <td className="px-4 py-2.5">
@@ -473,72 +463,89 @@ function DashboardPage() {
           </div>
         </motion.div>
 
+        {/* Right: Performance Snapshot */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="flex-[2] bg-white rounded-xl border border-[#E6EBF0] shadow-card p-5"
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="flex-[2] bg-white rounded-xl border border-slate-100 shadow-sm p-5 flex flex-col"
         >
-          <h2 className="text-sm font-semibold text-[#111827] mb-4">
-            Order Status Breakdown
-          </h2>
-          <div className="flex flex-col gap-4">
-            {statusBreakdown.map((s) => (
-              <div key={s.label}>
-                <div className="flex items-center justify-between mb-1.5">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="w-2.5 h-2.5 rounded-full"
-                      style={{ backgroundColor: s.color }}
-                    />
-                    <span className="text-xs font-medium text-[#374151]">
-                      {s.label}
-                    </span>
-                  </div>
-                  <span className="text-xs font-semibold text-[#111827]">
-                    {s.count.toLocaleString()}
-                  </span>
-                </div>
-                <div className="w-full bg-[#F3F6F8] rounded-full h-2">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${s.pct}%` }}
-                    transition={{ duration: 0.7, delay: 0.3 }}
-                    className="h-2 rounded-full"
-                    style={{ backgroundColor: s.color }}
-                  />
-                </div>
-                <div className="text-right text-[10px] text-[#9CA3AF] mt-0.5">
-                  {s.pct}%
-                </div>
-              </div>
-            ))}
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-sm font-semibold text-slate-700">
+              Performance Snapshot
+            </h2>
+            <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-1 rounded-full">
+              March 2026
+            </span>
           </div>
-          <div className="mt-6 pt-4 border-t border-[#E6EBF0] grid grid-cols-2 gap-3">
-            {statusBreakdown.map((s) => (
-              <div
+
+          <div className="flex flex-col gap-5 flex-1">
+            {statusBreakdown.map((s, i) => (
+              <motion.div
                 key={s.label}
-                className="rounded-lg p-3"
-                style={{ backgroundColor: `${s.color}18` }}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.35 + i * 0.05 }}
+                className="flex items-center gap-3"
               >
                 <div
-                  className="text-[18px] font-bold"
+                  className="text-2xl font-bold w-12 text-right shrink-0"
                   style={{ color: s.color }}
                 >
                   {s.count}
                 </div>
-                <div className="text-[10px] font-medium text-[#6B7280] mt-0.5">
-                  {s.label}
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-semibold text-slate-600">
+                      {s.label}
+                    </span>
+                    <span className="text-[10px] font-bold text-slate-400">
+                      {s.pct}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-100 rounded-full h-2">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${s.pct}%` }}
+                      transition={{
+                        duration: 0.8,
+                        delay: 0.4 + i * 0.08,
+                        ease: "easeOut",
+                      }}
+                      className="h-2 rounded-full"
+                      style={{ backgroundColor: s.color }}
+                    />
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
+          </div>
+
+          <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+            <div className="text-xs text-slate-500">
+              <span className="font-semibold text-slate-700">1,284</span> total
+              orders
+            </div>
+            <div className="flex items-center gap-1 text-teal-600">
+              <TrendingUp size={13} />
+              <span className="text-[11px] font-semibold">
+                +8% vs last month
+              </span>
+            </div>
           </div>
         </motion.div>
       </div>
 
-      <footer className="text-center text-xs text-[#9CA3AF] py-3 border-t border-[#E6EBF0]">
-        © All Rights Reserved {new Date().getFullYear()}. Design by Dyuti (IT
-        Division)
+      <footer className="text-center text-xs text-slate-400 py-3 border-t border-slate-100">
+        © {new Date().getFullYear()}. Built with love using{" "}
+        <a
+          href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
+          target="_blank"
+          rel="noreferrer"
+          className="underline hover:text-slate-600 transition-colors"
+        >
+          caffeine.ai
+        </a>
       </footer>
     </div>
   );
@@ -834,7 +841,11 @@ function QualiaReconciliationPage() {
                   type="button"
                   data-ocid="invoices.tab"
                   onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-colors ${activeTab === tab ? "bg-teal-500 text-white" : "bg-[#F3F6F8] text-[#6B7280] hover:bg-[#E6EBF0]"}`}
+                  className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+                    activeTab === tab
+                      ? "bg-teal-500 text-white"
+                      : "bg-[#F3F6F8] text-[#6B7280] hover:bg-[#E6EBF0]"
+                  }`}
                 >
                   {tab}
                 </button>
@@ -923,8 +934,15 @@ function QualiaReconciliationPage() {
       </motion.div>
 
       <footer className="text-center text-xs text-[#9CA3AF] py-3 border-t border-[#E6EBF0]">
-        © All Rights Reserved {new Date().getFullYear()}. Design by Dyuti (IT
-        Division)
+        © {new Date().getFullYear()}. Built with love using{" "}
+        <a
+          href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
+          target="_blank"
+          rel="noreferrer"
+          className="underline hover:text-slate-600 transition-colors"
+        >
+          caffeine.ai
+        </a>
       </footer>
     </div>
   );
@@ -932,25 +950,9 @@ function QualiaReconciliationPage() {
 
 export default function App() {
   const [activePage, setActivePage] = useState<Page>("dashboard");
-  const [accountsExpanded, setAccountsExpanded] = useState(true);
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(
-    new Set(),
-  );
-
-  const toggleSection = (id: string) => {
-    if (id === "accounts") {
-      setAccountsExpanded((v) => !v);
-      return;
-    }
-    setExpandedSections((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  };
 
   return (
-    <div className="flex h-screen bg-[#F3F6F8] overflow-hidden font-sans">
+    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
       {/* Sidebar */}
       <aside className="w-[240px] shrink-0 bg-white border-r border-[#E6EBF0] flex flex-col">
         {/* Brand */}
@@ -963,86 +965,50 @@ export default function App() {
           </span>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-3 px-3 space-y-0.5">
-          {navItems.map((item) => {
-            if (item.children) {
-              const isOpen =
-                item.id === "accounts"
-                  ? accountsExpanded
-                  : expandedSections.has(item.id);
+        {/* Nav — Accounts section only, always expanded */}
+        <nav className="flex-1 overflow-y-auto py-4 px-3">
+          {/* Section Label */}
+          <div className="px-3 mb-2">
+            <div className="flex items-center gap-2.5">
+              <DollarSign size={15} className="text-teal-500" />
+              <span className="text-sm font-semibold text-slate-700">
+                Accounts
+              </span>
+            </div>
+          </div>
+
+          {/* Children always shown */}
+          <div className="pl-4 space-y-0.5">
+            {[
+              { id: "dashboard" as Page, label: "Dashboard" },
+              {
+                id: "qualia-reconciliation" as Page,
+                label: "Qualia Reconciliation",
+              },
+            ].map((child) => {
+              const isActive = activePage === child.id;
               return (
-                <div key={item.id}>
-                  <button
-                    type="button"
-                    data-ocid="nav.link"
-                    onClick={() => toggleSection(item.id)}
-                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-[#374151] hover:bg-[#F3F6F8] transition-colors"
-                  >
-                    <span className="text-[#6B7280]">{item.icon}</span>
-                    <span className="flex-1 text-left font-medium">
-                      {item.label}
-                    </span>
-                    {isOpen ? (
-                      <ChevronDown size={14} className="text-[#9CA3AF]" />
-                    ) : (
-                      <ChevronRight size={14} className="text-[#9CA3AF]" />
-                    )}
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pl-4 pt-0.5 pb-1 space-y-0.5">
-                          {item.children.map((child) => {
-                            const isActive = activePage === child.id;
-                            return (
-                              <button
-                                key={child.id}
-                                type="button"
-                                data-ocid="nav.link"
-                                onClick={() => setActivePage(child.id as Page)}
-                                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                                  isActive
-                                    ? "bg-[#DFF1F0] text-teal-600"
-                                    : "text-[#6B7280] hover:bg-[#F3F6F8] hover:text-[#374151]"
-                                }`}
-                              >
-                                <span
-                                  className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-teal-500" : "bg-[#D1D5DB]"}`}
-                                />
-                                {child.label}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                <button
+                  key={child.id}
+                  type="button"
+                  data-ocid="nav.link"
+                  onClick={() => setActivePage(child.id)}
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-[#DFF1F0] text-teal-600"
+                      : "text-[#6B7280] hover:bg-[#F3F6F8] hover:text-[#374151]"
+                  }`}
+                >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                      isActive ? "bg-teal-500" : "bg-[#D1D5DB]"
+                    }`}
+                  />
+                  {child.label}
+                </button>
               );
-            }
-            return (
-              <button
-                key={item.id}
-                type="button"
-                data-ocid="nav.link"
-                onClick={() => toggleSection(item.id)}
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-[#374151] hover:bg-[#F3F6F8] transition-colors"
-              >
-                <span className="text-[#6B7280]">{item.icon}</span>
-                <span className="flex-1 text-left font-medium">
-                  {item.label}
-                </span>
-                <ChevronRight size={14} className="text-[#9CA3AF]" />
-              </button>
-            );
-          })}
+            })}
+          </div>
         </nav>
 
         {/* Sidebar Footer */}
